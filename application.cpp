@@ -21,7 +21,7 @@ void Application::open() {
             }
         }
 
-        engineApp.clear();
+        engineApp.clear(Color(255, 255, 255));
         engineApp.display();
     }
 

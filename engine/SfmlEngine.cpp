@@ -1,14 +1,19 @@
 #include "SfmlEngine.h"
 
-SfmlEngine::SfmlEngine(int width, int height, const char *appName): EngineInterface(width, height, appName),
+SfmlEngine::SfmlEngine(int width, int height, const char *appName):
+    EngineInterface(width, height, appName),
     window(sf::RenderWindow(sf::VideoMode(width, height), appName)) {}
 
 void SfmlEngine::setupApp(int width, int height, const char *appName) {
     window.create(sf::VideoMode(width, height), appName);
 }
 
-void SfmlEngine::clear() {
-    window.clear();
+sf::Color SfmlEngine::makeSfmlColor(const Color &color) {
+    return sf::Color(color.r, color.g, color.b, color.alpha);
+}
+
+void SfmlEngine::clear(const Color& color) {
+    window.clear(makeSfmlColor(color));
 }
 
 void SfmlEngine::display() {

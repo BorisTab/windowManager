@@ -1,3 +1,6 @@
+#ifndef EVENTS_H
+#define EVENTS_H
+
 namespace Mouse {
     enum Button {
         LeftButton,
@@ -33,3 +36,5 @@ public:
 
     union event currentEvent;
 };
+
+#endif
