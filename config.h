@@ -1,4 +1,4 @@
 #include "engine/SfmlEngine.h"
 #include "engine/GlutEngine.h"
 
-using Engine = GlutEngine;
+using Engine = SfmlEngine;

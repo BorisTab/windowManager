@@ -16,7 +16,7 @@ GlutEngine::GlutEngine(int width, int height, const char *appName):
     glutCloseFunc(addCloseEvent);
 }
 
-void GlutEngine::draw() {
+void GlutEngine::drawRect(int x, int y, int width, int height, const Color& color) {
 
 }
 

@@ -12,7 +12,7 @@ private:
 public:
     GlutEngine(int width, int height, const char* appName);
 
-    void draw() override;
+    void drawRect(int x, int y, int width, int height, const Color& color) override;
     void setupApp(int width, int height, const char* appName) override;
     void clear(const Color& color) override;
     void display() override;

@@ -20,9 +20,15 @@ void SfmlEngine::display() {
     window.display();
 }
 
-void SfmlEngine::draw() {
+void SfmlEngine::drawRect(int x, int y, int width, int height, const Color& color) {
+    sf::RectangleShape rect;
+    rect.setSize(sf::Vector2f(width, height));
+    rect.setPosition(x, y);
+    rect.setFillColor(makeSfmlColor(color));
 
+    window.draw(rect);
 }
+
 void SfmlEngine::close() {
     window.close();
 }

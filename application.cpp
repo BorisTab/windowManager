@@ -1,13 +1,23 @@
 #include "application.h"
 
 Application::Application(int width, int height, const char* appName):
-    engineApp(width, height, appName) {}
+    engineApp(width, height, appName),
+    backgroundColor(0, 0, 0, 255) {
+}
 
 void Application::close() {
     appOpen = false;
 }
 
-void Application::open() {
+void Application::setBackgroundColor(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha) {
+    backgroundColor = Color(r, g, b, alpha);
+}
+
+void Application::addDrawableObject(Window *drawableObject) {
+    windowsList.push_back(drawableObject);
+}
+
+void Application::run() {
     appOpen = true;
 
     while (appOpen) {
@@ -21,7 +31,11 @@ void Application::open() {
             }
         }
 
-        engineApp.clear(Color(255, 255, 255));
+        engineApp.clear(backgroundColor);
+        for (auto window: windowsList) {
+            window->draw(engineApp);
+        }
+
         engineApp.display();
     }
 

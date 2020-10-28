@@ -3,6 +3,7 @@
 
 #include "../events/events.h"
 #include "../primitives/colors.h"
+
 #include <queue>
 
 class EngineInterface {
@@ -10,7 +11,7 @@ public:
     EngineInterface() = default;
     EngineInterface(int width, int height, const char* appName);
 protected:
-    virtual void draw() = 0;
+    virtual void drawRect(int x, int y, int width, int height, const Color& color) = 0;
     virtual void setupApp(int width, int height, const char* appName) = 0;
     virtual void clear(const Color& color) = 0;
     virtual void display() = 0;
