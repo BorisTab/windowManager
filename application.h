@@ -3,12 +3,12 @@
 
 #include "config.h"
 #include "windows/windows.h"
+#include "events/eventQueue.h"
 
 class Application {
 private:
     bool appOpen = false;
     Engine engineApp;
-    std::queue<Event> eventQueue;
     Color backgroundColor;
     std::list<Window*> windowsList;
 

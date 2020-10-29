@@ -1,5 +1,7 @@
 #include "application.h"
 
+std::queue<Event> EventsQueue::queue;
+
 Application::Application(int width, int height, const char* appName):
     engineApp(width, height, appName),
     backgroundColor(0, 0, 0, 255) {
@@ -21,13 +23,17 @@ void Application::run() {
     appOpen = true;
 
     while (appOpen) {
-        engineApp.pollEvent(eventQueue);
-        while (!eventQueue.empty()) {
-            Event event = eventQueue.front();
-            eventQueue.pop();
+        engineApp.pollEvent(EventsQueue::queue);
+        while (!EventsQueue::queue.empty()) {
+            Event event = EventsQueue::queue.front();
+            EventsQueue::queue.pop();
 
             if (event.type == Event::Closed) {
                 close();
+            }
+
+            for (auto window: windowsList) {
+                window->getEvent(event);
             }
         }
 

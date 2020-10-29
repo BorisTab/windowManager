@@ -34,18 +34,20 @@ void SfmlEngine::close() {
 }
 
 Event SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
-    Event event;
+    Event event = {};
 
     event.type = Event::MouseClicked;
-    event.currentEvent.mouseClick.x = engineEvent.mouseButton.x;
-    event.currentEvent.mouseClick.y = engineEvent.mouseButton.y;
+    event.mouseClick.x = engineEvent.mouseButton.x;
+    event.mouseClick.y = engineEvent.mouseButton.y;
 
     switch (engineEvent.mouseButton.button) {
         case sf::Mouse::Left:
-            event.currentEvent.mouseClick.button = Mouse::LeftButton;
+            event.mouseClick.button = Mouse::LeftButton;
+            break;
 
         case sf::Mouse::Right:
-            event.currentEvent.mouseClick.button = Mouse::RightButton;
+            event.mouseClick.button = Mouse::RightButton;
+            break;
 
         default:
             break;
@@ -55,21 +57,22 @@ Event SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
 }
 
 void SfmlEngine::pollEvent(std::queue<Event>& eventQueue) {
-    sf::Event engineEvent;
+    sf::Event engineEvent = {};
     while (window.pollEvent(engineEvent)) {
-        Event event;
+        Event event = {};
 
         switch (engineEvent.type) {
             case sf::Event::EventType::Closed:
                 event.type = Event::Closed;
+                eventQueue.push(event);
                 break;
 
             case sf::Event::EventType::MouseButtonPressed:
                 event = createMouseEvent(engineEvent);
+                eventQueue.push(event);
 
             default:
                 break;
         }
-        eventQueue.push(event);
     }
 }

@@ -45,6 +45,12 @@ public:
 //        return *this;
 //    }
 
+    bool operator==(const Color& color) {
+        if (r == color.r && g == color.g && b == color.b && alpha == color.alpha)
+            return true;
+        return false;
+    }
+
     Color operator*(const double intensity) {
         return Color(r * intensity, g * intensity, b * intensity, alpha);
     }

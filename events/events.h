@@ -11,6 +11,7 @@ namespace Mouse {
 class Event {
 public:
     enum EventType {
+        Idle,
         MouseClicked,
         MouseMoved,
         Closed
@@ -29,12 +30,11 @@ public:
         int y;
     };
 
-    union event{
+    union {
         MouseClickEvent mouseClick;
         MouseMoveEvent mouseMove;
     };
 
-    union event currentEvent;
 };
 
 #endif
