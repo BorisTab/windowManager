@@ -10,7 +10,7 @@ private:
     sf::RenderWindow window;
 
     sf::Color makeSfmlColor(const Color& color);
-    Event createMouseEvent(sf::Event& engineEvent);
+    MouseEvent* createMouseEvent(sf::Event& engineEvent);
 
 public:
     SfmlEngine(int width, int height, const char* appName);
@@ -18,7 +18,7 @@ public:
     void setupApp(int width, int height, const char* appName) override;
     void clear(const Color& color) override;
     void display() override;
-    void pollEvent(std::queue<Event>& eventQueue) override;
+    void pollEvent(std::queue<Event*>& eventQueue) override;
     void close() override;
 };
 

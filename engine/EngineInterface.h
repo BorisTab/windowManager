@@ -15,7 +15,7 @@ protected:
     virtual void setupApp(int width, int height, const char* appName) = 0;
     virtual void clear(const Color& color) = 0;
     virtual void display() = 0;
-    virtual void pollEvent(std::queue<Event>& eventQueue) = 0;
+    virtual void pollEvent(std::queue<Event*>& eventQueue) = 0;
     virtual void close() = 0;
 };
 

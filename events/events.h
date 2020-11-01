@@ -1,40 +1,75 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-namespace Mouse {
-    enum Button {
-        LeftButton,
-        RightButton
-    };
-}
+//namespace Mouse {
+//    enum Button {
+//        LeftButton,
+//        RightButton
+//    };
+//}
+
+//class Event {
+//public:
+//    enum EventType {
+//        Idle,
+//        MouseClicked,
+//        MouseUnclicked,
+//        MouseMoved,
+//        Closed,
+//        ScrollBarCalled
+//    };
+//
+//    EventType type;
+//
+//    struct MouseClickEvent {
+//        int x;
+//        int y;
+//        Mouse::Button button;
+//    };
+//
+//    struct MouseMoveEvent {
+//        int x;
+//        int y;
+//    };
+//
+//    struct ScrollBarEvent {
+//        int id;
+//        int type;
+//    };
+//
+//    union {
+//        MouseClickEvent mouseClick;
+//        MouseMoveEvent mouseMove;
+//        ScrollBarEvent scrollBar;
+//    };
+//
+//};
 
 class Event {
 public:
     enum EventType {
         Idle,
         MouseClicked,
+        MouseUnclicked,
         MouseMoved,
-        Closed
+        Closed,
     };
+
+    virtual ~Event() = default;
 
     EventType type;
+};
 
-    struct MouseClickEvent {
-        int x;
-        int y;
-        Mouse::Button button;
+class MouseEvent: public Event {
+public:
+    enum Button {
+        LeftButton,
+        RightButton
     };
 
-    struct MouseMoveEvent {
-        int x;
-        int y;
-    };
-
-    union {
-        MouseClickEvent mouseClick;
-        MouseMoveEvent mouseMove;
-    };
-
+    int x;
+    int y;
+    Button button;
 };
 
 #endif

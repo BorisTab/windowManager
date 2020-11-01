@@ -1,6 +1,6 @@
 #include "GlutEngine.h"
 
-std::queue<Event> GlutEngine::engineEventQueue = {};
+std::queue<Event*> GlutEngine::engineEventQueue = {};
 
 GlutEngine::GlutEngine(int width, int height, const char *appName):
     EngineInterface(width, height, appName) {
@@ -35,10 +35,10 @@ void GlutEngine::drawRect(int x, int y, int width, int height, const Color& colo
 
 void GlutEngine::close() {}
 
-void GlutEngine::pollEvent(std::queue<Event> &eventQueue) {
+void GlutEngine::pollEvent(std::queue<Event*> &eventQueue) {
     if (eventQueue.empty()) {
         eventQueue = std::move(engineEventQueue);
-        engineEventQueue = std::queue<Event>();
+        engineEventQueue = std::queue<Event*>();
         return;
     }
 
@@ -80,7 +80,7 @@ void GlutEngine::renderCanvas() {
 void GlutEngine::addCloseEvent() {
     Event event = {};
     event.type = Event::Closed;
-    engineEventQueue.push(event);
+    engineEventQueue.push(&event);
 }
 
 

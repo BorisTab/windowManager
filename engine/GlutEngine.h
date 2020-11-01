@@ -8,7 +8,7 @@
 class GlutEngine: public EngineInterface {
 private:
     int window = 0;
-    static std::queue<Event> engineEventQueue;
+    static std::queue<Event*> engineEventQueue;
 public:
     GlutEngine(int width, int height, const char* appName);
 
@@ -16,7 +16,7 @@ public:
     void setupApp(int width, int height, const char* appName) override;
     void clear(const Color& color) override;
     void display() override;
-    void pollEvent(std::queue<Event>& eventQueue) override;
+    void pollEvent(std::queue<Event*>& eventQueue) override;
     void close() override;
 
     static void renderCanvas();

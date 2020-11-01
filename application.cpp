@@ -1,6 +1,6 @@
 #include "application.h"
 
-std::queue<Event> EventsQueue::queue;
+std::queue<Event*> EventsQueue::queue;
 
 Application::Application(int width, int height, const char* appName):
     engineApp(width, height, appName),
@@ -19,22 +19,25 @@ void Application::addDrawableObject(Window *drawableObject) {
     windowsList.push_back(drawableObject);
 }
 
+SystemEventSender* Application::getSystemEventManager() {
+    return &systemEventSender;
+}
+
 void Application::run() {
     appOpen = true;
 
     while (appOpen) {
         engineApp.pollEvent(EventsQueue::queue);
         while (!EventsQueue::queue.empty()) {
-            Event event = EventsQueue::queue.front();
+            Event* event = EventsQueue::queue.front();
             EventsQueue::queue.pop();
 
-            if (event.type == Event::Closed) {
+            if (event->type == Event::Closed) {
                 close();
             }
 
-            for (auto window: windowsList) {
-                window->getEvent(event);
-            }
+            EventManager::sendEvent(&systemEventSender, *event);
+            delete event;
         }
 
         engineApp.clear(backgroundColor);

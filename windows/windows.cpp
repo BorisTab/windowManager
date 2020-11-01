@@ -1,7 +1,5 @@
 #include "windows.h"
 
-void Window::getEvent(Event& event) {}
-
 RectangleWindow::RectangleWindow(int x, int y, int width, int height, const Color& color):
     x(x),
     y(y),
@@ -17,23 +15,22 @@ void RectangleWindow::draw(Engine& engine) {
     }
 }
 
-RectButton::RectButton(int x, int y, int width, int height, const Color &color):
-        RectangleWindow(x, y, width, height, color) {}
-
-//void RectButton::onLeftClick(void (*clickFunction)()) {
-//    leftClickFunc = clickFunction;
-//}
+RectButton::RectButton(int x, int y, int width, int height, const Color &color, SystemEventSender* systemEventSender):
+    RectangleWindow(x, y, width, height, color) {
+    EventManager::addListener(systemEventSender, this);
+}
 
 void RectButton::getEvent(Event &event) {
     if (event.type == Event::MouseClicked) {
-        int clickX = event.mouseClick.x;
-        int clickY = event.mouseClick.y;
+        int clickX = dynamic_cast<MouseEvent&>(event).x;
+        int clickY = dynamic_cast<MouseEvent&>(event).y;
 
         if (clickX >= x && clickX <= x + width && clickY >= y && clickY <= y + height) {
-            if (event.mouseClick.button == Mouse::LeftButton)
-                onLeftClick();
+            onLeftClick(event);
         }
-    }
+
+    } else if (event.type == Event::MouseUnclicked)
+        onLeftUnclick(event);
 
     for (auto window: subWindows) {
         window->getEvent(event);

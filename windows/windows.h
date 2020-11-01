@@ -1,22 +1,8 @@
 #ifndef BASE_OBJECTS_H
 #define BASE_OBJECTS_H
 
-#include "../events/events.h"
-#include "../config.h"
-//#include "../events/eventQueue.h"
-
-#include <list>
-
-class Window {
-protected:
-    std::list<Window*> subWindows;
-
-public:
-    Window() = default;
-
-    virtual void draw(Engine& engine) = 0;
-    virtual void getEvent(Event& event);
-};
+#include "baseWindow.h"
+#include "../events/eventManager.h"
 
 class RectangleWindow: public Window {
 public:
@@ -33,12 +19,12 @@ public:
 
 class RectButton: public RectangleWindow {
 private:
-//    void (*leftClickFunc)() = nullptr;
 
 public:
-    RectButton(int x, int y, int width, int height, const Color& color);
+    RectButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender);
 
-    virtual void onLeftClick() = 0;
+    virtual void onLeftClick(Event& event) = 0;
+    virtual void onLeftUnclick(Event& event) = 0;
     void getEvent(Event& event) override;
 };
 

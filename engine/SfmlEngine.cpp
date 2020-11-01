@@ -33,20 +33,29 @@ void SfmlEngine::close() {
     window.close();
 }
 
-Event SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
-    Event event = {};
+MouseEvent* SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
+    auto event = new MouseEvent;
 
-    event.type = Event::MouseClicked;
-    event.mouseClick.x = engineEvent.mouseButton.x;
-    event.mouseClick.y = engineEvent.mouseButton.y;
+    event->x = engineEvent.mouseButton.x;
+    event->y = engineEvent.mouseButton.y;
+
+    if (engineEvent.type == sf::Event::MouseMoved) {
+        event->type = Event::MouseMoved;
+        return event;
+    }
+
+    if (engineEvent.type == sf::Event::MouseButtonPressed)
+        event->type = Event::MouseClicked;
+    else if (engineEvent.type == sf::Event::MouseButtonReleased)
+        event->type = Event::MouseUnclicked;
 
     switch (engineEvent.mouseButton.button) {
         case sf::Mouse::Left:
-            event.mouseClick.button = Mouse::LeftButton;
+            event->button = MouseEvent::LeftButton;
             break;
 
         case sf::Mouse::Right:
-            event.mouseClick.button = Mouse::RightButton;
+            event->button = MouseEvent::RightButton;
             break;
 
         default:
@@ -56,20 +65,24 @@ Event SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
     return event;
 }
 
-void SfmlEngine::pollEvent(std::queue<Event>& eventQueue) {
+void SfmlEngine::pollEvent(std::queue<Event*>& eventQueue) {
     sf::Event engineEvent = {};
     while (window.pollEvent(engineEvent)) {
-        Event event = {};
+        Event *event = nullptr;
 
         switch (engineEvent.type) {
-            case sf::Event::EventType::Closed:
-                event.type = Event::Closed;
+            case sf::Event::Closed:
+                event = new Event;
+                event->type = Event::Closed;
                 eventQueue.push(event);
                 break;
 
-            case sf::Event::EventType::MouseButtonPressed:
+            case sf::Event::MouseButtonPressed:
+            case sf::Event::MouseButtonReleased:
+            case sf::Event::MouseMoved:
                 event = createMouseEvent(engineEvent);
                 eventQueue.push(event);
+                break;
 
             default:
                 break;
