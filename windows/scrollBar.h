@@ -32,6 +32,7 @@ private:
     friend class ScrollBar;
 
     int beginUpDifference = 0;
+    Color clickedColor = Color(204, 133, 0);
 
     ScrollBarSlider(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
@@ -71,6 +72,13 @@ public:
     ScrollBar(int x, int y, int width, int height, SystemEventSender* systemEventSender);
 
     void getEvent(std::unique_ptr<Event>& event) override;
+
+    void setSliderColor(const Color& color, const Color& clickedColor);
+    void setButtonsColor(const Color& color);
+    void setContainerColor(const Color& color);
+
+    void scrollDownButtonEventCreate(std::unique_ptr<Event>& event);
+    void scrollUpButtonEventCreate(std::unique_ptr<Event>& event);
 };
 
 struct ScrollUpButtonPressedEvent: public Event {
@@ -107,6 +115,12 @@ struct ScrollContainerClickEvent: public Event {
     int minY = 0;
     int maxY = 0;
     ScrollContainerClickEvent();
+};
+
+struct ScrollBarActionEvent: public Event {
+    enum Actions {
+
+    };
 };
 
 #endif //WINDOWMANAGER_SCROLLBAR_H

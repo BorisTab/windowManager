@@ -11,6 +11,7 @@ private:
 
     sf::Color makeSfmlColor(const Color& color);
     MouseEvent* createMouseEvent(sf::Event& engineEvent);
+    KeyEvent* createKeyEvent(sf::Event& engineEvent);
 
 public:
     SfmlEngine(int width, int height, const char* appName);

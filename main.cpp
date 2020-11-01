@@ -17,6 +17,10 @@ public:
     void onLeftUnclick(std::unique_ptr<Event>& event) override {
         color = purple;
     }
+
+    void getEvent(std::unique_ptr<Event> &event) override {
+//        if ()
+    }
 };
 
 int main() {

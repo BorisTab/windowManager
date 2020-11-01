@@ -68,6 +68,47 @@ MouseEvent* SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
     return event;
 }
 
+KeyEvent* SfmlEngine::createKeyEvent(sf::Event &engineEvent) {
+    auto event = new KeyEvent;
+    event->type = Event::KeyClicked;
+
+    event->alt = engineEvent.key.alt;
+    event->ctrl = engineEvent.key.control;
+    event->shift = engineEvent.key.shift;
+    event->system = engineEvent.key.system;
+
+    switch (engineEvent.key.code) {
+        case sf::Keyboard::PageUp:
+            event->key = KeyEvent::PgUp;
+            break;
+
+        case sf::Keyboard::PageDown:
+            event->key = KeyEvent::PgDn;
+            break;
+
+        case sf::Keyboard::Home:
+            event->key = KeyEvent::Home;
+            break;
+
+        case sf::Keyboard::End:
+            event->key = KeyEvent::End;
+            break;
+
+        case sf::Keyboard::Up:
+            event->key = KeyEvent::Up;
+            break;
+
+        case sf::Keyboard::Down:
+            event->key = KeyEvent::Down;
+            break;
+
+        default:
+            break;
+    }
+
+    return event;
+}
+
 void SfmlEngine::pollEvent(std::queue<Event*>& eventQueue) {
     sf::Event engineEvent = {};
     while (window.pollEvent(engineEvent)) {
@@ -84,6 +125,11 @@ void SfmlEngine::pollEvent(std::queue<Event*>& eventQueue) {
             case sf::Event::MouseButtonReleased:
             case sf::Event::MouseMoved:
                 event = createMouseEvent(engineEvent);
+                eventQueue.push(event);
+                break;
+
+            case sf::Event::KeyPressed:
+                event = createKeyEvent(engineEvent);
                 eventQueue.push(event);
                 break;
 

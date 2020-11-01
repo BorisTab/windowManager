@@ -57,20 +57,42 @@ ScrollBar::ScrollBar(int x, int y, int width, int height, SystemEventSender *sys
     EventManager::addListener(this, &scrollBarContainer);
 }
 
+void ScrollBar::setButtonsColor(const Color &color) {
+    scrollBarUpButton.color = color;
+    scrollBarDownButton.color = color;
+}
+
+void ScrollBar::setContainerColor(const Color &color) {
+    scrollBarContainer.color = color;
+}
+
+void ScrollBar::setSliderColor(const Color &color, const Color &clickedColor) {
+    scrollBarSlider.color = color;
+    scrollBarSlider.clickedColor = clickedColor;
+}
+
+void ScrollBar::scrollDownButtonEventCreate(std::unique_ptr<Event> &event) {
+    auto barEvent = new ScrollDownButtonEvent;
+    barEvent->maxY = maxSliderPos;
+
+    auto uniquePtrEvent = std::unique_ptr<Event>(barEvent);
+    EventManager::sendEvent(this, uniquePtrEvent);
+}
+
+void ScrollBar::scrollUpButtonEventCreate(std::unique_ptr<Event> &event) {
+    auto barEvent = new ScrollUpButtonEvent;
+    barEvent->minY = minSliderPos;
+
+    auto uniquePtrEvent = std::unique_ptr<Event>(barEvent);
+    EventManager::sendEvent(this, uniquePtrEvent);
+}
+
 void ScrollBar::getEvent(std::unique_ptr<Event>& event) {
     if (event->type == Event::ScrollDownButtonClicked) {
-        auto barEvent = new ScrollDownButtonEvent;
-        barEvent->maxY = maxSliderPos;
-
-        auto uniquePtrEvent = std::unique_ptr<Event>(barEvent);
-        EventManager::sendEvent(this, uniquePtrEvent);
+        scrollDownButtonEventCreate(event);
     }
     else if (event->type == Event::ScrollUpButtonClicked) {
-        auto barEvent = new ScrollUpButtonEvent;
-        barEvent->minY = minSliderPos;
-
-        auto uniquePtrEvent = std::unique_ptr<Event>(barEvent);
-        EventManager::sendEvent(this, uniquePtrEvent);
+        scrollUpButtonEventCreate(event);
     }
     else if (event->type == Event::ScrollSliderClicked) {
         sliderPressed = true;
@@ -94,6 +116,13 @@ void ScrollBar::getEvent(std::unique_ptr<Event>& event) {
         ptr->minY = minSliderPos;
 
         EventManager::sendEvent(this, event);
+    }
+    else if (event->type == Event::KeyClicked) {
+        auto keyEvent = dynamic_cast<KeyEvent*>(event.get());
+        if (keyEvent->ctrl && keyEvent->key == KeyEvent::Down)
+            scrollDownButtonEventCreate(event);
+        if (keyEvent->ctrl && keyEvent->key == KeyEvent::Up)
+            scrollUpButtonEventCreate(event);
     }
 }
 
@@ -156,7 +185,7 @@ void ScrollBarSlider::getEvent(std::unique_ptr<Event>& event) {
 }
 
 void ScrollBarSlider::onLeftClick(std::unique_ptr<Event>& event) {
-    color = Color(204, 133, 0);
+    color = clickedColor;
 
     auto sliderEvent = new ScrollSliderEvent;
     sliderEvent->type = Event::ScrollSliderClicked;

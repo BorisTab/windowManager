@@ -8,6 +8,7 @@ public:
         MouseClicked,
         MouseUnclicked,
         MouseMoved,
+        KeyClicked,
         Closed,
         ScrollUpButtonClicked,
         ScrollDownButtonClicked,
@@ -16,7 +17,8 @@ public:
         ScrollSliderClicked,
         ScrollSliderUnclicked,
         ScrollMouseMoved,
-        ScrollContainerClicked
+        ScrollContainerClicked,
+        ScrollBarAction
     };
 
     virtual ~Event() = default;
@@ -24,8 +26,7 @@ public:
     EventType type;
 };
 
-class MouseEvent: public Event {
-public:
+struct MouseEvent: public Event {
     enum Button {
         LeftButton,
         RightButton
@@ -34,6 +35,23 @@ public:
     int x = 0;
     int y = 0;
     Button button;
+};
+
+struct KeyEvent: public Event {
+    enum Key {
+        PgUp,
+        PgDn,
+        Home,
+        End,
+        Up,
+        Down
+    };
+
+    Key key;
+    bool alt = false;
+    bool ctrl = false;
+    bool shift = false;
+    bool system = false;
 };
 
 #endif
