@@ -19,7 +19,7 @@ public:
     static void deleteListener(Window* sender, Window* listener);
     static void deleteListenerForAll(Window* listener);
 
-    static void sendEvent(Window* sender, Event& event);
+    static void sendEvent(Window* sender, std::unique_ptr<Event>& event);
 };
 
 class SystemEventSender: public Window {

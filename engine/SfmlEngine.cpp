@@ -36,13 +36,16 @@ void SfmlEngine::close() {
 MouseEvent* SfmlEngine::createMouseEvent(sf::Event& engineEvent) {
     auto event = new MouseEvent;
 
-    event->x = engineEvent.mouseButton.x;
-    event->y = engineEvent.mouseButton.y;
-
     if (engineEvent.type == sf::Event::MouseMoved) {
+        event->x = engineEvent.mouseMove.x;
+        event->y = engineEvent.mouseMove.y;
+
         event->type = Event::MouseMoved;
         return event;
     }
+
+    event->x = engineEvent.mouseButton.x;
+    event->y = engineEvent.mouseButton.y;
 
     if (engineEvent.type == sf::Event::MouseButtonPressed)
         event->type = Event::MouseClicked;

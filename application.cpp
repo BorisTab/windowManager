@@ -29,15 +29,14 @@ void Application::run() {
     while (appOpen) {
         engineApp.pollEvent(EventsQueue::queue);
         while (!EventsQueue::queue.empty()) {
-            Event* event = EventsQueue::queue.front();
+            auto event = std::unique_ptr<Event>(EventsQueue::queue.front());
             EventsQueue::queue.pop();
 
             if (event->type == Event::Closed) {
                 close();
             }
 
-            EventManager::sendEvent(&systemEventSender, *event);
-//            delete event;
+            EventManager::sendEvent(&systemEventSender, event);
         }
 
         engineApp.clear(backgroundColor);

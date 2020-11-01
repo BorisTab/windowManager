@@ -1,6 +1,6 @@
 #include "baseWindow.h"
 
-void Window::getEvent(Event& event) {
+void Window::getEvent(std::unique_ptr<Event>& event) {
     for(auto window: subWindows) {
         window->getEvent(event);
     }

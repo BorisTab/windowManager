@@ -20,20 +20,20 @@ RectButton::RectButton(int x, int y, int width, int height, const Color &color, 
     EventManager::addListener(systemEventSender, this);
 }
 
-void RectButton::checkClick(Event &event) {
-    if (event.type == Event::MouseClicked) {
-        int clickX = dynamic_cast<MouseEvent&>(event).x;
-        int clickY = dynamic_cast<MouseEvent&>(event).y;
+void RectButton::checkClick(std::unique_ptr<Event>& event) {
+    if (event->type == Event::MouseClicked) {
+        int clickX = dynamic_cast<MouseEvent*>(event.get())->x;
+        int clickY = dynamic_cast<MouseEvent*>(event.get())->y;
 
         if (clickX >= x && clickX <= x + width && clickY >= y && clickY <= y + height) {
             onLeftClick(event);
         }
 
-    } else if (event.type == Event::MouseUnclicked)
+    } else if (event->type == Event::MouseUnclicked)
         onLeftUnclick(event);
 }
 
-void RectButton::getEvent(Event &event) {
+void RectButton::getEvent(std::unique_ptr<Event>& event) {
     checkClick(event);
 
     for (auto window: subWindows) {

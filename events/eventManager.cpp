@@ -24,7 +24,7 @@ void EventManager::deleteListenerForAll(Window *listener) {
     }
 }
 
-void EventManager::sendEvent(Window *sender, Event& event) {
+void EventManager::sendEvent(Window *sender, std::unique_ptr<Event>& event) {
     for (auto& listener: eventWindows.at(sender)) {
         listener->getEvent(event);
     }

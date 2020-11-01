@@ -10,11 +10,11 @@ public:
     ColorChangeButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
         RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override {
+    void onLeftClick(std::unique_ptr<Event>& event) override {
         color = orange;
     }
 
-    void onLeftUnclick(Event& event) override {
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {
         color = purple;
     }
 };

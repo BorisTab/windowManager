@@ -15,7 +15,7 @@ public:
     Window() = default;
 
     virtual void draw(Engine& engine);
-    virtual void getEvent(Event& event);
+    virtual void getEvent(std::unique_ptr<Event>& event);
 
     void addSubWindow(Window* window);
 };

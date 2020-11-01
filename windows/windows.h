@@ -23,10 +23,10 @@ private:
 public:
     RectButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender);
 
-    virtual void onLeftClick(Event& event) = 0;
-    virtual void onLeftUnclick(Event& event) = 0;
-    void getEvent(Event& event) override;
-    void checkClick(Event& event);
+    virtual void onLeftClick(std::unique_ptr<Event>& event) = 0;
+    virtual void onLeftUnclick(std::unique_ptr<Event>& event) = 0;
+    void getEvent(std::unique_ptr<Event>& event) override;
+    void checkClick(std::unique_ptr<Event>& event);
 };
 
 #endif

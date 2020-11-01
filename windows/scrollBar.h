@@ -10,9 +10,9 @@ private:
     ScrollBarUpButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override;
+    void onLeftClick(std::unique_ptr<Event>& event) override;
 
-    void onLeftUnclick(Event& event) override {
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {
 
     }
 };
@@ -24,23 +24,26 @@ private:
     ScrollBarDownButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override;
+    void onLeftClick(std::unique_ptr<Event>& event) override;
 
-    void onLeftUnclick(Event& event) override {}
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {}
 };
 
 class ScrollBarSlider: RectButton {
 private:
     friend class ScrollBar;
 
+//    int lastMousePosY = 0;
+    int beginUpDifference = 0;
+
     ScrollBarSlider(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override;
-    void onLeftUnclick(Event& event) override;
+    void onLeftClick(std::unique_ptr<Event>& event) override;
+    void onLeftUnclick(std::unique_ptr<Event>& event) override;
 
 public:
-    void getEvent(Event &event) override;
+    void getEvent(std::unique_ptr<Event>& event) override;
 };
 
 class ScrollBarContainer: RectButton {
@@ -50,11 +53,11 @@ private:
     ScrollBarContainer(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override {
+    void onLeftClick(std::unique_ptr<Event>& event) override {
 
     }
 
-    void onLeftUnclick(Event& event) override {
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {
 
     }
 };
@@ -75,7 +78,7 @@ private:
 public:
     ScrollBar(int x, int y, int width, int height, SystemEventSender* systemEventSender);
 
-    void getEvent(Event &event) override;
+    void getEvent(std::unique_ptr<Event>& event) override;
 };
 
 struct ScrollUpButtonPressedEvent: public Event {
@@ -97,7 +100,9 @@ struct ScrollDownButtonEvent: public Event {
     ScrollDownButtonEvent();
 };
 
-struct ScrollSliderEvent: public Event {};
+struct ScrollSliderEvent: public Event {
+//    int upDifference = 0;
+};
 
 struct ScrollMouseMoveEvent: public Event {
     bool sliderPressed = false;
