@@ -12,9 +12,7 @@ private:
 
     void onLeftClick(std::unique_ptr<Event>& event) override;
 
-    void onLeftUnclick(std::unique_ptr<Event>& event) override {
-
-    }
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {}
 };
 
 class ScrollBarDownButton: RectButton {
@@ -33,7 +31,6 @@ class ScrollBarSlider: RectButton {
 private:
     friend class ScrollBar;
 
-//    int lastMousePosY = 0;
     int beginUpDifference = 0;
 
     ScrollBarSlider(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
@@ -53,13 +50,9 @@ private:
     ScrollBarContainer(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(std::unique_ptr<Event>& event) override {
+    void onLeftClick(std::unique_ptr<Event>& event) override;
 
-    }
-
-    void onLeftUnclick(std::unique_ptr<Event>& event) override {
-
-    }
+    void onLeftUnclick(std::unique_ptr<Event>& event) override {}
 };
 
 class ScrollBar: public Window {
@@ -72,7 +65,6 @@ private:
     int maxSliderPos = 0;
     int minSliderPos = 0;
 
-//    int sliderPos = 0;
     bool sliderPressed = false;
 
 public:
@@ -100,9 +92,7 @@ struct ScrollDownButtonEvent: public Event {
     ScrollDownButtonEvent();
 };
 
-struct ScrollSliderEvent: public Event {
-//    int upDifference = 0;
-};
+struct ScrollSliderEvent: public Event {};
 
 struct ScrollMouseMoveEvent: public Event {
     bool sliderPressed = false;
@@ -110,6 +100,13 @@ struct ScrollMouseMoveEvent: public Event {
     int maxY = 0;
     int mousePosY = 0;
     ScrollMouseMoveEvent();
+};
+
+struct ScrollContainerClickEvent: public Event {
+    int mousePosY = 0;
+    int minY = 0;
+    int maxY = 0;
+    ScrollContainerClickEvent();
 };
 
 #endif //WINDOWMANAGER_SCROLLBAR_H

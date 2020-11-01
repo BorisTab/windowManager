@@ -20,6 +20,10 @@ ScrollMouseMoveEvent::ScrollMouseMoveEvent() {
     type = ScrollMouseMoved;
 }
 
+ScrollContainerClickEvent::ScrollContainerClickEvent() {
+    type = ScrollContainerClicked;
+}
+
 ScrollBar::ScrollBar(int x, int y, int width, int height, SystemEventSender *systemEventSender):
         scrollBarUpButton(x, y, width, width, Color(77, 0, 153), systemEventSender),
         scrollBarDownButton(x, y + height - width, width, width, Color(77, 0, 153), systemEventSender),
@@ -84,6 +88,13 @@ void ScrollBar::getEvent(std::unique_ptr<Event>& event) {
         auto uniquePtrEvent = std::unique_ptr<Event>(barEvent);
         EventManager::sendEvent(this, uniquePtrEvent);
     }
+    else if (event->type == Event::ScrollContainerClicked) {
+        auto ptr = dynamic_cast<ScrollContainerClickEvent*>(event.get());
+        ptr->maxY = maxSliderPos;
+        ptr->minY = minSliderPos;
+
+        EventManager::sendEvent(this, event);
+    }
 }
 
 void ScrollBarDownButton::onLeftClick(std::unique_ptr<Event>& event) {
@@ -119,7 +130,6 @@ void ScrollBarSlider::getEvent(std::unique_ptr<Event>& event) {
         auto barEvent = dynamic_cast<ScrollMouseMoveEvent*>(event.get());
 
         if (barEvent->sliderPressed) {
-//            int diff = barEvent->mousePosY - y;
             y = barEvent->mousePosY - beginUpDifference;
 
             if (y < barEvent->minY)
@@ -127,6 +137,19 @@ void ScrollBarSlider::getEvent(std::unique_ptr<Event>& event) {
             else if (y > barEvent->maxY - height)
                 y = barEvent->maxY - height;
         }
+    }
+    else if (event->type == Event::ScrollContainerClicked) {
+        auto barEvent = dynamic_cast<ScrollContainerClickEvent*>(event.get());
+
+        if (barEvent->mousePosY < y)
+            y -= 50;
+        else if (barEvent->mousePosY > y + height)
+            y += 50;
+
+        if (y < barEvent->minY)
+            y = barEvent->minY;
+        else if (y > barEvent->maxY - height)
+            y = barEvent->maxY - height;
     }
     else
         checkClick(event);
@@ -137,7 +160,6 @@ void ScrollBarSlider::onLeftClick(std::unique_ptr<Event>& event) {
 
     auto sliderEvent = new ScrollSliderEvent;
     sliderEvent->type = Event::ScrollSliderClicked;
-//    sliderEvent->upDifference = dynamic_cast<MouseEvent*>(event.get())->y - y;
     beginUpDifference = dynamic_cast<MouseEvent*>(event.get())->y - y;
 
     auto uniquePtrEvent = std::unique_ptr<Event>(sliderEvent);
@@ -149,6 +171,14 @@ void ScrollBarSlider::onLeftUnclick(std::unique_ptr<Event>& event) {
 
     auto sliderEvent = new ScrollSliderEvent;
     sliderEvent->type = Event::ScrollSliderUnclicked;
+
+    auto uniquePtrEvent = std::unique_ptr<Event>(sliderEvent);
+    EventManager::sendEvent(this, uniquePtrEvent);
+}
+
+void ScrollBarContainer::onLeftClick(std::unique_ptr<Event> &event) {
+    auto sliderEvent = new ScrollContainerClickEvent;
+    sliderEvent->mousePosY = dynamic_cast<MouseEvent*>(event.get())->y;
 
     auto uniquePtrEvent = std::unique_ptr<Event>(sliderEvent);
     EventManager::sendEvent(this, uniquePtrEvent);

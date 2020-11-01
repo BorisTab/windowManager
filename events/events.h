@@ -15,7 +15,8 @@ public:
         ScrollDownButton,
         ScrollSliderClicked,
         ScrollSliderUnclicked,
-        ScrollMouseMoved
+        ScrollMouseMoved,
+        ScrollContainerClicked
     };
 
     virtual ~Event() = default;
