@@ -10,9 +10,7 @@ private:
     ScrollBarUpButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override {
-
-    }
+    void onLeftClick(Event& event) override;
 
     void onLeftUnclick(Event& event) override {
 
@@ -26,13 +24,9 @@ private:
     ScrollBarDownButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender):
             RectButton(x, y, width, height, color, systemEventSender) {}
 
-    void onLeftClick(Event& event) override {
+    void onLeftClick(Event& event) override;
 
-    }
-
-    void onLeftUnclick(Event& event) override {
-
-    }
+    void onLeftUnclick(Event& event) override {}
 };
 
 class ScrollBarSlider: RectButton {
@@ -46,7 +40,7 @@ private:
     void onLeftUnclick(Event& event) override;
 
 public:
-//    void getEvent(Event &event) override;
+    void getEvent(Event &event) override;
 };
 
 class ScrollBarContainer: RectButton {
@@ -72,12 +66,45 @@ private:
     ScrollBarDownButton scrollBarDownButton;
     ScrollBarSlider scrollBarSlider;
 
-    int sliderPos = 0;
-    int sliderHeight = 0;
+    int maxSliderPos = 0;
+    int minSliderPos = 0;
+
+//    int sliderPos = 0;
     bool sliderPressed = false;
 
 public:
     ScrollBar(int x, int y, int width, int height, SystemEventSender* systemEventSender);
+
+    void getEvent(Event &event) override;
+};
+
+struct ScrollUpButtonPressedEvent: public Event {
+    ScrollUpButtonPressedEvent();
+};
+
+struct ScrollDownButtonPressedEvent: public Event {
+    ScrollDownButtonPressedEvent();
+};
+
+struct ScrollUpButtonEvent: public Event {
+    int minY = 0;
+    ScrollUpButtonEvent();
+};
+
+
+struct ScrollDownButtonEvent: public Event {
+    int maxY = 0;
+    ScrollDownButtonEvent();
+};
+
+struct ScrollSliderEvent: public Event {};
+
+struct ScrollMouseMoveEvent: public Event {
+    bool sliderPressed = false;
+    int minY = 0;
+    int maxY = 0;
+    int mousePosY = 0;
+    ScrollMouseMoveEvent();
 };
 
 #endif //WINDOWMANAGER_SCROLLBAR_H

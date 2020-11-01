@@ -26,6 +26,7 @@ public:
     virtual void onLeftClick(Event& event) = 0;
     virtual void onLeftUnclick(Event& event) = 0;
     void getEvent(Event& event) override;
+    void checkClick(Event& event);
 };
 
 #endif

@@ -37,7 +37,7 @@ void Application::run() {
             }
 
             EventManager::sendEvent(&systemEventSender, *event);
-            delete event;
+//            delete event;
         }
 
         engineApp.clear(backgroundColor);

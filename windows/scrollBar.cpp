@@ -1,39 +1,137 @@
 #include "scrollBar.h"
 
+ScrollUpButtonPressedEvent::ScrollUpButtonPressedEvent() {
+    type = ScrollUpButtonClicked;
+}
+
+ScrollDownButtonPressedEvent::ScrollDownButtonPressedEvent() {
+    type = ScrollDownButtonClicked;
+}
+
+ScrollUpButtonEvent::ScrollUpButtonEvent() {
+    type = ScrollUpButton;
+}
+
+ScrollDownButtonEvent::ScrollDownButtonEvent() {
+    type = ScrollDownButton;
+}
+
+ScrollMouseMoveEvent::ScrollMouseMoveEvent() {
+    type = ScrollMouseMoved;
+}
+
 ScrollBar::ScrollBar(int x, int y, int width, int height, SystemEventSender *systemEventSender):
         scrollBarUpButton(x, y, width, width, Color(77, 0, 153), systemEventSender),
         scrollBarDownButton(x, y + height - width, width, width, Color(77, 0, 153), systemEventSender),
         scrollBarContainer(x, y + width, width, height - 2 * width, Color(128, 128, 128), systemEventSender),
         scrollBarSlider(x, y + width, width, 2 * width, Color(255, 165, 0), systemEventSender) {
 
+    minSliderPos = y + width;
+    maxSliderPos = y + height - width;
+
     subWindows.push_back(&scrollBarDownButton);
     subWindows.push_back(&scrollBarUpButton);
     subWindows.push_back(&scrollBarContainer);
     subWindows.push_back(&scrollBarSlider);
 
-//    EventManager::addSender(this);
-//    EventManager::addSender(&scrollBarUpButton);
-//    EventManager::addSender(&scrollBarDownButton);
-//    EventManager::addSender(&scrollBarSlider);
+    EventManager::addListener(systemEventSender, this);
 
+    EventManager::addSender(this);
+    EventManager::addSender(&scrollBarContainer);
+    EventManager::addSender(&scrollBarUpButton);
+    EventManager::addSender(&scrollBarDownButton);
+    EventManager::addSender(&scrollBarSlider);
+
+    EventManager::addListener(&scrollBarDownButton, this);
+    EventManager::addListener(&scrollBarUpButton, this);
+    EventManager::addListener(&scrollBarSlider, this);
+    EventManager::addListener(&scrollBarContainer, this);
+
+    EventManager::addListener(this, &scrollBarDownButton);
+    EventManager::addListener(this, &scrollBarUpButton);
+    EventManager::addListener(this, &scrollBarSlider);
+    EventManager::addListener(this, &scrollBarContainer);
 }
 
-//void ScrollBarDownButton::onLeftClick() {
-//    Event event;
-//    event.type = Event::ScrollBarEvent;
-//    event.scrollBar.id =
-//}
-//
-//void ScrollBarSlider::getEvent(Event &event) {
-//    if (event.type == Event::MouseMoved && ScrollBar::sliderPressed == true) {
-//        y = event.mouseMove.y - height / 2;
-//    }
-//}
+void ScrollBar::getEvent(Event &event) {
+    if (event.type == Event::ScrollDownButtonClicked) {
+        auto barEvent = new ScrollDownButtonEvent;
+        barEvent->maxY = maxSliderPos;
+        EventManager::sendEvent(this, *barEvent);
+    }
+    else if (event.type == Event::ScrollUpButtonClicked) {
+        auto barEvent = new ScrollUpButtonEvent;
+        barEvent->minY = minSliderPos;
+        EventManager::sendEvent(this, *barEvent);
+    }
+    else if (event.type == Event::ScrollSliderClicked) {
+        sliderPressed = true;
+    }
+    else if (event.type == Event::ScrollSliderUnclicked) {
+        sliderPressed = false;
+    }
+    else if (event.type == Event::MouseMoved) {
+        auto barEvent = new ScrollMouseMoveEvent;
+        barEvent->sliderPressed = sliderPressed;
+        barEvent->mousePosY = dynamic_cast<MouseEvent&>(event).y;
+        EventManager::sendEvent(this, *barEvent);
+    }
+
+    delete &event;
+}
+
+void ScrollBarDownButton::onLeftClick(Event& event) {
+    auto scrollEvent = new ScrollDownButtonPressedEvent;
+    EventManager::sendEvent(this, *scrollEvent);
+}
+
+void ScrollBarUpButton::onLeftClick(Event &event) {
+    auto scrollEvent = new ScrollUpButtonPressedEvent;
+    EventManager::sendEvent(this, *scrollEvent);
+}
+
+void ScrollBarSlider::getEvent(Event &event) {
+    if (event.type == Event::ScrollDownButton) {
+        int maxY = dynamic_cast<ScrollDownButtonEvent&>(event).maxY;
+        if (y <  maxY - height - 5)
+            y += 5;
+        else
+            y = maxY - height;
+
+        delete &event;
+    }
+    else if (event.type == Event::ScrollUpButton) {
+        int minY = dynamic_cast<ScrollUpButtonEvent&>(event).minY;
+        if (y >  minY + 5)
+            y -= 5;
+        else
+            y = minY;
+
+        delete &event;
+    }
+    else if (event.type == Event::ScrollMouseMoved) {
+        auto barEvent = dynamic_cast<ScrollMouseMoveEvent&>(event);
+
+        if (barEvent.sliderPressed) {
+            y = barEvent.mousePosY - height / 2;
+        }
+    }
+    else
+        checkClick(event);
+}
 
 void ScrollBarSlider::onLeftClick(Event& event) {
     color = Color(204, 133, 0);
+
+    auto sliderEvent = new ScrollSliderEvent;
+    sliderEvent->type = Event::ScrollSliderClicked;
+    EventManager::sendEvent(this, *sliderEvent);
 }
 
 void ScrollBarSlider::onLeftUnclick(Event &event) {
     color = Color(255, 165, 0);
+
+    auto sliderEvent = new ScrollSliderEvent;
+    sliderEvent->type = Event::ScrollSliderUnclicked;
+    EventManager::sendEvent(this, *sliderEvent);
 }
