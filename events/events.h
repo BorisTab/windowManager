@@ -18,7 +18,8 @@ public:
         ScrollSliderUnclicked,
         ScrollMouseMoved,
         ScrollContainerClicked,
-        ScrollBarAction
+        ScrollBarAction,
+        ScrollGetSliderPos
     };
 
     virtual ~Event() = default;

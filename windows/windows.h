@@ -29,4 +29,19 @@ public:
     void checkClick(std::unique_ptr<Event>& event);
 };
 
+class Text: public Window {
+private:
+    int x = 0;
+    int y = 0;
+    int fontSize = 18;
+    std::string text;
+    std::string fontPath;
+public:
+    Text(int x, int y, const std::string& text);
+    void setFont(const std::string& pathToFont);
+    void setFontSize(int size);
+
+    void draw(Engine &engine) override;
+};
+
 #endif

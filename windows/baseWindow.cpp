@@ -10,8 +10,12 @@ void Window::addSubWindow(Window *window) {
     subWindows.push_back(window);
 }
 
-void Window::draw(Engine &engine) {
+void Window::drawSubWindows(Engine &engine) {
     for (auto window: subWindows) {
         window->draw(engine);
     }
+}
+
+void Window::draw(Engine &engine) {
+    drawSubWindows(engine);
 }

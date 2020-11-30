@@ -19,7 +19,18 @@ public:
     }
 
     void getEvent(std::unique_ptr<Event> &event) override {
-//        if ()
+        if (event->type == Event::ScrollBarAction) {
+            y = 50 + dynamic_cast<ScrollBarActionEvent*>(event.get())->percent * 200;
+            printf("%f\n", dynamic_cast<ScrollBarActionEvent*>(event.get())->percent);
+        }
+
+        checkClick(event);
+
+        for (auto window: subWindows) {
+            window->getEvent(event);
+        }
+
+
     }
 };
 
@@ -30,11 +41,13 @@ int main() {
     ColorChangeButton button(50, 50, 200, 75, purple, app.getSystemEventManager());
     app.addDrawableObject(&button);
 
-    ColorChangeButton button2(50, 200, 200, 75, purple, app.getSystemEventManager());
+    ColorChangeButton button2(50, 400, 200, 75, purple, app.getSystemEventManager());
     app.addDrawableObject(&button2);
 
     ScrollBar scrollBar(600, 50, 30, 300, app.getSystemEventManager());
     app.addDrawableObject(&scrollBar);
+
+    EventManager::addListener(&scrollBar, &button);
 
     app.run();
 

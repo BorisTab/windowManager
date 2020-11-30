@@ -65,6 +65,7 @@ private:
 
     int maxSliderPos = 0;
     int minSliderPos = 0;
+    int sliderLastPos = 0;
 
     bool sliderPressed = false;
 
@@ -79,6 +80,7 @@ public:
 
     void scrollDownButtonEventCreate(std::unique_ptr<Event>& event);
     void scrollUpButtonEventCreate(std::unique_ptr<Event>& event);
+    void scrollContainerClickedEventCreate(std::unique_ptr<Event>& event);
 };
 
 struct ScrollUpButtonPressedEvent: public Event {
@@ -107,6 +109,7 @@ struct ScrollMouseMoveEvent: public Event {
     int minY = 0;
     int maxY = 0;
     int mousePosY = 0;
+    int sliderPos = 0;
     ScrollMouseMoveEvent();
 };
 
@@ -118,9 +121,23 @@ struct ScrollContainerClickEvent: public Event {
 };
 
 struct ScrollBarActionEvent: public Event {
-    enum Actions {
+    int diff = 0;
+    float percent = 0;
 
+    enum Action {
+        ScrolledUp,
+        ScrolledDown
     };
+    Action action;
+
+    ScrollBarActionEvent();
+};
+
+struct ScrollGetSliderPosEvent: public Event {
+    int sliderPos = 0;
+    int height = 0;
+
+    ScrollGetSliderPosEvent();
 };
 
 #endif //WINDOWMANAGER_SCROLLBAR_H

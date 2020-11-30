@@ -10,9 +10,7 @@ RectangleWindow::RectangleWindow(int x, int y, int width, int height, const Colo
 void RectangleWindow::draw(Engine& engine) {
     engine.drawRect(x, y, width, height, color);
 
-    for (auto subWindow: subWindows) {
-        subWindow->draw(engine);
-    }
+    drawSubWindows(engine);
 }
 
 RectButton::RectButton(int x, int y, int width, int height, const Color &color, SystemEventSender* systemEventSender):
@@ -39,4 +37,22 @@ void RectButton::getEvent(std::unique_ptr<Event>& event) {
     for (auto window: subWindows) {
         window->getEvent(event);
     }
+}
+
+Text::Text(int x, int y, const std::string& text):
+     x(x),
+     y(y),
+     text(text) {}
+
+void Text::setFont(const std::string& pathToFont) {
+    fontPath = pathToFont;
+}
+
+void Text::setFontSize(int size) {
+    fontSize = size;
+}
+
+void Text::draw(Engine &engine) {
+    engine.drawText(x, y, text, fontPath, fontSize);
+    drawSubWindows(engine);
 }

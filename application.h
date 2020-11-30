@@ -1,9 +1,16 @@
+#ifndef WINDOWMANAGER_APPLICATION_H
+#define WINDOWMANAGER_APPLICATION_H
+
 #include <queue>
 #include <list>
 
 #include "config.h"
 #include "windows/windows.h"
 #include "events/eventQueue.h"
+
+enum AppMode {
+    fullscreen
+};
 
 class Application {
 private:
@@ -15,11 +22,15 @@ private:
 
 public:
     Application(int width, int height, const char* appName);
+    Application(const char* appName, AppMode appMode);
 
     SystemEventSender* getSystemEventManager();
     void setBackgroundColor(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha = 255);
+    void setBackgroundColor(const Color& color);
     void close();
     void run();
 
     void addDrawableObject(Window* drawableObject);
 };
+
+#endif

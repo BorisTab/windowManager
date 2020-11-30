@@ -26,9 +26,6 @@ class SystemEventSender: public Window {
 private:
     friend class Application;
     SystemEventSender();
-
-public:
-
 };
 
 

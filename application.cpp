@@ -1,10 +1,18 @@
 #include "application.h"
+#include <stdio.h>
 
 std::queue<Event*> EventsQueue::queue;
 
 Application::Application(int width, int height, const char* appName):
     engineApp(width, height, appName),
-    backgroundColor(0, 0, 0, 255) {
+    backgroundColor(0, 0, 0, 255) {}
+
+Application::Application(const char *appName, AppMode appMode):
+    backgroundColor(0, 0, 0, 255){
+    if (AppMode::fullscreen == appMode) {
+        engineApp.setupFullScreenApp(appName);
+    } else
+        fprintf(stderr, "Error: wrong application mode\n");
 }
 
 void Application::close() {
@@ -13,6 +21,10 @@ void Application::close() {
 
 void Application::setBackgroundColor(unsigned char r, unsigned char g, unsigned char b, unsigned char alpha) {
     backgroundColor = Color(r, g, b, alpha);
+}
+
+void Application::setBackgroundColor(const Color &color) {
+    backgroundColor = color;
 }
 
 void Application::addDrawableObject(Window *drawableObject) {

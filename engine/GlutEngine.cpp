@@ -33,6 +33,10 @@ void GlutEngine::drawRect(int x, int y, int width, int height, const Color& colo
     glPopMatrix();
 }
 
+void GlutEngine::drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) {
+
+}
+
 void GlutEngine::close() {}
 
 void GlutEngine::pollEvent(std::queue<Event*> &eventQueue) {

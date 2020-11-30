@@ -4,8 +4,30 @@ SfmlEngine::SfmlEngine(int width, int height, const char *appName):
     EngineInterface(width, height, appName),
     window(sf::RenderWindow(sf::VideoMode(width, height), appName)) {}
 
+SfmlEngine::SfmlEngine(const char *appName):
+    EngineInterface(0, 0, appName),
+    window(sf::RenderWindow(sf::VideoMode(0, 0), appName)){
+    
+    sf::RenderWindow titleBarCheckWindow(sf::VideoMode(800, 600), "");
+    int titleBarHeight = titleBarCheckWindow.getSize().y - 600;
+    titleBarCheckWindow.close();
+
+    window.setSize({sf::VideoMode::getDesktopMode().width, 
+                    sf::VideoMode::getDesktopMode().height - titleBarHeight});
+}
+
 void SfmlEngine::setupApp(int width, int height, const char *appName) {
     window.create(sf::VideoMode(width, height), appName);
+}
+
+void SfmlEngine::setupFullScreenApp(const char *appName) {
+    sf::RenderWindow titleBarCheckWindow(sf::VideoMode(800, 600), "");
+    int titleBarHeight = titleBarCheckWindow.getSize().y - 600;
+    titleBarCheckWindow.close();
+
+    window.create(sf::VideoMode(sf::VideoMode::getDesktopMode().width, 
+                    sf::VideoMode::getDesktopMode().height - titleBarHeight),
+                    appName);
 }
 
 sf::Color SfmlEngine::makeSfmlColor(const Color &color) {
@@ -27,6 +49,40 @@ void SfmlEngine::drawRect(int x, int y, int width, int height, const Color& colo
     rect.setFillColor(makeSfmlColor(color));
 
     window.draw(rect);
+}
+
+void SfmlEngine::drawPixels(int xStart, int yStart, std::vector<std::vector<Color>> &pixels) {
+    sf::Image image;
+    image.create(pixels[0].size(), pixels.size());
+    for (int y = 0; y < pixels.size(); ++y) {
+        for (int x = 0; x < pixels[0].size(); ++x) {
+            image.setPixel(x, y, makeSfmlColor(pixels[y][x]));
+        }
+    }
+
+    sf::Texture texture;
+    texture.loadFromImage(image);
+    sf::Sprite sprite(texture);
+    sprite.setPosition(xStart, yStart);
+    window.draw(sprite);
+}
+
+
+void SfmlEngine::drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) {
+    sf::Text sfText;
+    sfText.setPosition(x, y);
+    sfText.setCharacterSize(fontSize);
+    sfText.setFillColor(sf::Color::Black);
+
+    if (!fontPath.empty()) {
+        sf::Font font;
+        if (!font.loadFromFile(fontPath))
+            fprintf(stderr, "font \"%s\" not found\n", fontPath.c_str());
+        sfText.setFont(font);
+    } else
+        fprintf(stderr, "font \"%s\" not found\n", fontPath.c_str());
+
+    window.draw(sfText);
 }
 
 void SfmlEngine::close() {

@@ -15,12 +15,22 @@ private:
 
 public:
     SfmlEngine(int width, int height, const char* appName);
+    explicit SfmlEngine(const char* appName);
+    SfmlEngine() = default;
+
     void drawRect(int x, int y, int width, int height, const Color& color) override;
+    void drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) override;
+    void drawPixels(int xStart, int yStart, std::vector<std::vector<Color>>& pixels);
+
     void setupApp(int width, int height, const char* appName) override;
+    void setupFullScreenApp(const char* appName);
+
     void clear(const Color& color) override;
     void display() override;
     void pollEvent(std::queue<Event*>& eventQueue) override;
     void close() override;
+
+//    static sf::Color makeSfColor(const Color& color);
 };
 
 #endif

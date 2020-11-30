@@ -18,6 +18,7 @@ public:
     virtual void getEvent(std::unique_ptr<Event>& event);
 
     void addSubWindow(Window* window);
+    void drawSubWindows(Engine& engine);
 };
 
 #endif //WINDOWMANAGER_BASEWINDOW_H
