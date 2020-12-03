@@ -2,7 +2,9 @@
 
 SfmlEngine::SfmlEngine(int width, int height, const char *appName):
     EngineInterface(width, height, appName),
-    window(sf::RenderWindow(sf::VideoMode(width, height), appName)) {}
+    window(sf::RenderWindow(sf::VideoMode(width, height), appName)) {
+    window.setFramerateLimit(30);
+}
 
 SfmlEngine::SfmlEngine(const char *appName):
     EngineInterface(0, 0, appName),

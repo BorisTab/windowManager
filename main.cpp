@@ -21,7 +21,7 @@ public:
     void getEvent(std::unique_ptr<Event> &event) override {
         if (event->type == Event::ScrollBarAction) {
             y = 50 + dynamic_cast<ScrollBarActionEvent*>(event.get())->percent * 200;
-            printf("%f\n", dynamic_cast<ScrollBarActionEvent*>(event.get())->percent);
+            // printf("%f\n", dynamic_cast<ScrollBarActionEvent*>(event.get())->percent);
         }
 
         checkClick(event);
@@ -35,7 +35,7 @@ public:
 };
 
 int main() {
-    Application app(800, 600, "Engine work");
+    Application app(1800, 900, "Engine work");
     app.setBackgroundColor(255, 255, 255);
 
     ColorChangeButton button(50, 50, 200, 75, purple, app.getSystemEventManager());
@@ -48,6 +48,11 @@ int main() {
     app.addDrawableObject(&scrollBar);
 
     EventManager::addListener(&scrollBar, &button);
+
+    Slider testSlider(500, 500, 50, 50, {255, 0, 0},
+                      app.getSystemEventManager(), 
+                      400, 600);
+    app.addDrawableObject(&testSlider);
 
     app.run();
 

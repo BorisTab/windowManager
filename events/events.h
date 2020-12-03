@@ -19,12 +19,15 @@ public:
         ScrollMouseMoved,
         ScrollContainerClicked,
         ScrollBarAction,
-        ScrollGetSliderPos
+        ScrollGetSliderPos,
+        SliderMoved,
+        PointerMoved,
+        UserEvent
     };
 
     virtual ~Event() = default;
 
-    EventType type;
+    int type;
 };
 
 struct MouseEvent: public Event {

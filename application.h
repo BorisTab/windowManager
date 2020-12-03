@@ -7,6 +7,8 @@
 #include "config.h"
 #include "windows/windows.h"
 #include "events/eventQueue.h"
+#include "primitives/primitives.h"
+#include "windows/sliderPointer.h"
 
 enum AppMode {
     fullscreen

@@ -34,9 +34,45 @@ void RectButton::checkClick(std::unique_ptr<Event>& event) {
 void RectButton::getEvent(std::unique_ptr<Event>& event) {
     checkClick(event);
 
-    for (auto window: subWindows) {
-        window->getEvent(event);
-    }
+    // for (auto window: subWindows) {
+    //     window->getEvent(event);
+    // }
+}
+
+RectMoveable::RectMoveable(int x, int y, int width, int height, 
+                           const Color& color, 
+                           SystemEventSender* systemEventSender):
+    RectButton(x, y, width, height, color, systemEventSender) {}
+
+void RectMoveable::getEvent(std::unique_ptr<Event>& event) {
+    RectButton::getEvent(event);
+    
+    if (Event::MouseMoved == event->type && mousePressed)
+        onMouseMove(event);
+}
+
+void RectMoveable::onLeftClick(std::unique_ptr<Event>& event) {
+    mousePressed = true;
+}
+
+void RectMoveable::onLeftUnclick(std::unique_ptr<Event>& event) {
+    mousePressed = false;
+}
+
+RectPixelButton::RectPixelButton(int x, int y, int width, int height, 
+                                 const Color& color, 
+                                 SystemEventSender* systemEventSender):
+                RectButton(x, y, width, height, color, systemEventSender),
+                pixels(height, std::vector<Color>(width, color)) {}
+
+void RectPixelButton::draw(Engine& engine) {
+    engine.drawPixels(x, y, pixels);
+
+    drawSubWindows(engine);
+}
+
+std::vector<std::vector<Color>>& RectPixelButton::getPixels() {
+    return pixels;
 }
 
 Text::Text(int x, int y, const std::string& text):

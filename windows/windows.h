@@ -29,6 +29,35 @@ public:
     void checkClick(std::unique_ptr<Event>& event);
 };
 
+class RectMoveable: public RectButton {
+protected:
+    bool mousePressed = false;
+
+public:
+    RectMoveable(int x, int y, int width, int height, 
+                 const Color& color, 
+                 SystemEventSender* systemEventSender);
+
+    void getEvent(std::unique_ptr<Event>& event) override;
+    void onLeftClick(std::unique_ptr<Event>& event) override;
+    void onLeftUnclick(std::unique_ptr<Event>& event) override;
+
+    virtual void onMouseMove(std::unique_ptr<Event>& event) = 0;
+};
+
+class RectPixelButton: public RectButton {
+protected:
+    std::vector<std::vector<Color>> pixels;
+
+public:
+    RectPixelButton(int x, int y, int width, int height, 
+                    const Color& color, 
+                    SystemEventSender* systemEventSender);
+
+    std::vector<std::vector<Color>>& getPixels();
+    void draw(Engine& engine) override;
+};
+
 class Text: public Window {
 private:
     int x = 0;
