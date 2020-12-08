@@ -12,7 +12,8 @@ public:
     EngineInterface() = default;
     EngineInterface(int width, int height, const char* appName);
 protected:
-    virtual void drawRect(int x, int y, int width, int height, const Color& color) = 0;
+    virtual void drawRect(int x, int y, int width, int height, const Color& color, 
+                          const std::string_view& imageName = "") = 0;
     virtual void drawText(int x, int y, const std::string& text, const std::string& fontPath, int fontSize) = 0;
 
     virtual void setupApp(int width, int height, const char* appName) = 0;

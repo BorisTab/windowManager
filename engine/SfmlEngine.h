@@ -8,6 +8,7 @@
 class SfmlEngine: public EngineInterface {
 private:
     sf::RenderWindow window;
+    std::map<std::string, sf::Texture> imageMap;
 
     sf::Color makeSfmlColor(const Color& color);
     MouseEvent* createMouseEvent(sf::Event& engineEvent);
@@ -18,7 +19,8 @@ public:
     explicit SfmlEngine(const char* appName);
     SfmlEngine() = default;
 
-    void drawRect(int x, int y, int width, int height, const Color& color) override;
+    void drawRect(int x, int y, int width, int height, const Color& color,
+                  const std::string_view& imageName = "") override;
     void drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) override;
     void drawPixels(int xStart, int yStart, std::vector<std::vector<Color>>& pixels);
 
@@ -31,6 +33,8 @@ public:
     void close() override;
 
 //    static sf::Color makeSfColor(const Color& color);
+    void addImage(const std::string_view& path, 
+                  const std::string& name);
 };
 
 #endif

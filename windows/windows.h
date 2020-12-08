@@ -10,10 +10,13 @@ public:
     int y = 0;
     int height = 0;
     int width = 0;
+    std::string imageName;
     Color color;
 
 public:
     RectangleWindow(int x, int y, int width, int height, const Color& color);
+    RectangleWindow(int x, int y, int width, int height, const Color& color, 
+                    const std::string& imageName);
     void draw(Engine& engine) override;
 };
 
@@ -21,7 +24,9 @@ class RectButton: public RectangleWindow {
 private:
 
 public:
-    RectButton(int x, int y, int width, int height, const Color& color, SystemEventSender* systemEventSender);
+    RectButton(int x, int y, int width, int height, const Color& color, 
+               SystemEventSender* systemEventSender, 
+               const std::string& imageName = "");
 
     virtual void onLeftClick(std::unique_ptr<Event>& event) = 0;
     virtual void onLeftUnclick(std::unique_ptr<Event>& event) = 0;
@@ -36,7 +41,8 @@ protected:
 public:
     RectMoveable(int x, int y, int width, int height, 
                  const Color& color, 
-                 SystemEventSender* systemEventSender);
+                 SystemEventSender* systemEventSender, 
+                 const std::string& imageName = "");
 
     void getEvent(std::unique_ptr<Event>& event) override;
     void onLeftClick(std::unique_ptr<Event>& event) override;

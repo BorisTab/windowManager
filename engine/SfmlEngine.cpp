@@ -44,11 +44,24 @@ void SfmlEngine::display() {
     window.display();
 }
 
-void SfmlEngine::drawRect(int x, int y, int width, int height, const Color& color) {
+void SfmlEngine::drawRect(int x, int y, int width, int height, 
+                          const Color& color,
+                          const std::string_view& imageName) {
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(width, height));
     rect.setPosition(x, y);
     rect.setFillColor(makeSfmlColor(color));
+
+    if (imageName != "") {
+        sf::RectangleShape textureRect;
+        textureRect.setSize(sf::Vector2f(width, height));
+        textureRect.setPosition(x, y);
+        textureRect.setTexture(&imageMap[imageName.data()]);
+
+        window.draw(rect);
+        window.draw(textureRect);
+        return;
+    }
 
     window.draw(rect);
 }
@@ -195,4 +208,10 @@ void SfmlEngine::pollEvent(std::queue<Event*>& eventQueue) {
                 break;
         }
     }
+}
+
+void SfmlEngine::addImage(const std::string_view& path, 
+                          const std::string& name) {
+    imageMap.emplace(std::pair<std::string, sf::Texture>(name, {}));
+    imageMap[name].loadFromFile(path.data());
 }

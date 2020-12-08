@@ -23,15 +23,15 @@ GlutEngine::GlutEngine(int width, int height, const char *appName):
 //    glLoadIdentity();
 }
 
-void GlutEngine::drawRect(int x, int y, int width, int height, const Color& color) {
+// void GlutEngine::drawRect(int x, int y, int width, int height, const Color& color) {
 //    glColor4i(color.r, color.g, color.b, color.alpha);
 //    glRecti(x, y, x + width, x + height);
 
-    glPushMatrix();
-    glColor3f(1.0f,0.0f,0.0f);
-    glRectf(10,10,150,100);
-    glPopMatrix();
-}
+//     glPushMatrix();
+//     glColor3f(1.0f,0.0f,0.0f);
+//     glRectf(10,10,150,100);
+//     glPopMatrix();
+// }
 
 void GlutEngine::drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) {
 

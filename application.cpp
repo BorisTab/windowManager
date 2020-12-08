@@ -61,3 +61,8 @@ void Application::run() {
 
     engineApp.close();
 }
+
+void Application::loadImageFromFile(const std::string_view& path, 
+                                    const std::string& name) {
+    engineApp.addImage(path, name);
+}

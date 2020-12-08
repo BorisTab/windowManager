@@ -9,7 +9,9 @@ Slider::Slider(int x, int y, int width, int height,
                             color, systemEventSender),
                minPos(minPos),
                maxPos(maxPos),
-               vertical(vertical) {}
+               vertical(vertical) {
+    EventManager::addSender(this);
+}
 
 double Slider::insideCheck(double pos) {
     pos = std::max(pos, minPos);

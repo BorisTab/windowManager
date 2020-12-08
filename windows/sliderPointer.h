@@ -6,8 +6,9 @@
 
 class Slider: public RectMoveable {
 private:
-    double value;
     bool vertical;
+protected:
+    double value;
     double minPos;
     double maxPos;
 

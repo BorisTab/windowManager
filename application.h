@@ -33,6 +33,9 @@ public:
     void run();
 
     void addDrawableObject(Window* drawableObject);
+
+    void loadImageFromFile(const std::string_view& path, 
+                           const std::string& name);
 };
 
 #endif

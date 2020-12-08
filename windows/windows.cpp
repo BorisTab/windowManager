@@ -5,16 +5,30 @@ RectangleWindow::RectangleWindow(int x, int y, int width, int height, const Colo
     y(y),
     width(width),
     height(height),
-    color(color) {}
+    color(color),
+    imageName("") {}
+
+RectangleWindow::RectangleWindow(int x, int y, int width, int height, 
+                                 const Color& color,
+                                 const std::string& imageName):
+    x(x),
+    y(y),
+    width(width),
+    height(height),
+    color(color), 
+    imageName(imageName) {}
 
 void RectangleWindow::draw(Engine& engine) {
-    engine.drawRect(x, y, width, height, color);
+    engine.drawRect(x, y, width, height, color, imageName);
 
     drawSubWindows(engine);
 }
 
-RectButton::RectButton(int x, int y, int width, int height, const Color &color, SystemEventSender* systemEventSender):
-    RectangleWindow(x, y, width, height, color) {
+RectButton::RectButton(int x, int y, int width, int height, 
+                       const Color &color, 
+                       SystemEventSender* systemEventSender,
+                       const std::string& imageName):
+    RectangleWindow(x, y, width, height, color, imageName) {
     EventManager::addListener(systemEventSender, this);
 }
 
@@ -41,8 +55,9 @@ void RectButton::getEvent(std::unique_ptr<Event>& event) {
 
 RectMoveable::RectMoveable(int x, int y, int width, int height, 
                            const Color& color, 
-                           SystemEventSender* systemEventSender):
-    RectButton(x, y, width, height, color, systemEventSender) {}
+                           SystemEventSender* systemEventSender,
+                           const std::string& imageName):
+    RectButton(x, y, width, height, color, systemEventSender, imageName) {}
 
 void RectMoveable::getEvent(std::unique_ptr<Event>& event) {
     RectButton::getEvent(event);
