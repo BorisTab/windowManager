@@ -70,10 +70,15 @@ private:
     int y = 0;
     int fontSize = 18;
     std::string text;
-    std::string fontPath;
+    std::string font;
+    Color color;
 public:
-    Text(int x, int y, const std::string& text);
-    void setFont(const std::string& pathToFont);
+    Text(int x, int y, const std::string& text, 
+         const std::string& fontName,
+         int fontSize, 
+         const Color& color);
+
+    void setFont(const std::string& fontName);
     void setFontSize(int size);
 
     void draw(Engine &engine) override;

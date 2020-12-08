@@ -83,19 +83,20 @@ void SfmlEngine::drawPixels(int xStart, int yStart, std::vector<std::vector<Colo
 }
 
 
-void SfmlEngine::drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) {
+void SfmlEngine::drawText(int x, int y, const std::string &text, 
+                          const std::string &font, 
+                          int fontSize, 
+                          const Color& color) {
     sf::Text sfText;
     sfText.setPosition(x, y);
     sfText.setCharacterSize(fontSize);
-    sfText.setFillColor(sf::Color::Black);
+    sfText.setFillColor(makeSfmlColor(color));
+    sfText.setString(text);
 
-    if (!fontPath.empty()) {
-        sf::Font font;
-        if (!font.loadFromFile(fontPath))
-            fprintf(stderr, "font \"%s\" not found\n", fontPath.c_str());
-        sfText.setFont(font);
-    } else
-        fprintf(stderr, "font \"%s\" not found\n", fontPath.c_str());
+    if (!font.empty()) 
+        sfText.setFont(fontMap[font]);
+    else
+        fprintf(stderr, "font \"%s\" not found\n", font.c_str());
 
     window.draw(sfText);
 }
@@ -214,4 +215,24 @@ void SfmlEngine::addImage(const std::string_view& path,
                           const std::string& name) {
     imageMap.emplace(std::pair<std::string, sf::Texture>(name, {}));
     imageMap[name].loadFromFile(path.data());
+}
+
+void SfmlEngine::addFont(const std::string_view& path, 
+                         const std::string& name) {
+    fontMap.emplace(std::pair<std::string, sf::Font>(name, {}));
+    fontMap[name].loadFromFile(path.data());
+}
+
+void SfmlEngine::savePixels(const std::vector<std::vector<Color>>& pixels,
+                            const std::string& filePath) {
+    sf::Image image;
+    image.create(pixels[0].size(), pixels.size());
+
+    for (int y = 0; y < pixels.size(); ++y) {
+        for (int x = 0; x < pixels[0].size(); ++x) {
+            image.setPixel(x, y, makeSfmlColor(pixels[y][x]));
+        }
+    }
+
+    image.saveToFile(filePath);
 }

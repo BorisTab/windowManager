@@ -66,3 +66,26 @@ void Application::loadImageFromFile(const std::string_view& path,
                                     const std::string& name) {
     engineApp.addImage(path, name);
 }
+
+void Application::loadFontFromFile(const std::string_view& path, 
+                                   const std::string& name) {
+    engineApp.addFont(path, name);
+}
+
+void Application::getEvent(std::unique_ptr<Event>& event) {
+    switch (event->type)
+    {
+    case Event::SavePixels:
+        savePixels(event);
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void Application::savePixels(std::unique_ptr<Event>& event) {
+    auto savePixelsEvent = dynamic_cast<SavePixelsEvent*>(event.get()); 
+    engineApp.savePixels(savePixelsEvent->pixels, 
+                         savePixelsEvent->filePath);
+}

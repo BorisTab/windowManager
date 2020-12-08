@@ -9,6 +9,7 @@ class SfmlEngine: public EngineInterface {
 private:
     sf::RenderWindow window;
     std::map<std::string, sf::Texture> imageMap;
+    std::map<std::string, sf::Font> fontMap;
 
     sf::Color makeSfmlColor(const Color& color);
     MouseEvent* createMouseEvent(sf::Event& engineEvent);
@@ -21,7 +22,10 @@ public:
 
     void drawRect(int x, int y, int width, int height, const Color& color,
                   const std::string_view& imageName = "") override;
-    void drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) override;
+    void drawText(int x, int y, const std::string &text, 
+                  const std::string &font, 
+                  int fontSize, 
+                  const Color& color) override;
     void drawPixels(int xStart, int yStart, std::vector<std::vector<Color>>& pixels);
 
     void setupApp(int width, int height, const char* appName) override;
@@ -32,9 +36,13 @@ public:
     void pollEvent(std::queue<Event*>& eventQueue) override;
     void close() override;
 
-//    static sf::Color makeSfColor(const Color& color);
     void addImage(const std::string_view& path, 
                   const std::string& name);
+    void addFont(const std::string_view& path, 
+                 const std::string& name);
+
+    void savePixels(const std::vector<std::vector<Color>>& pixels,
+                    const std::string& filePath);
 };
 
 #endif

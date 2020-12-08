@@ -14,7 +14,10 @@ public:
 protected:
     virtual void drawRect(int x, int y, int width, int height, const Color& color, 
                           const std::string_view& imageName = "") = 0;
-    virtual void drawText(int x, int y, const std::string& text, const std::string& fontPath, int fontSize) = 0;
+    virtual void drawText(int x, int y, const std::string& text, 
+                          const std::string& font, 
+                          int fontSize,
+                          const Color& color) = 0;
 
     virtual void setupApp(int width, int height, const char* appName) = 0;
     virtual void clear(const Color& color) = 0;

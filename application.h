@@ -14,7 +14,7 @@ enum AppMode {
     fullscreen
 };
 
-class Application {
+class Application: public Window {
 private:
     bool appOpen = false;
     Engine engineApp;
@@ -36,6 +36,11 @@ public:
 
     void loadImageFromFile(const std::string_view& path, 
                            const std::string& name);
+    void loadFontFromFile(const std::string_view& path, 
+                          const std::string& name);
+
+    void getEvent(std::unique_ptr<Event>& event) override;
+    void savePixels(std::unique_ptr<Event>& event);
 };
 
 #endif

@@ -33,7 +33,10 @@ GlutEngine::GlutEngine(int width, int height, const char *appName):
 //     glPopMatrix();
 // }
 
-void GlutEngine::drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) {
+void GlutEngine::drawText(int x, int y, const std::string &text, 
+                          const std::string &fontPath, 
+                          int fontSize, 
+                          const Color& color) {
 
 }
 

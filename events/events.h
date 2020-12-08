@@ -1,6 +1,10 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+#include <vector>
+#include <string>
+#include "../primitives/colors.h"
+
 class Event {
 public:
     enum EventType {
@@ -22,6 +26,7 @@ public:
         ScrollGetSliderPos,
         SliderMoved,
         PointerMoved,
+        SavePixels,
         UserEvent
     };
 
@@ -56,6 +61,14 @@ struct KeyEvent: public Event {
     bool ctrl = false;
     bool shift = false;
     bool system = false;
+};
+
+struct SavePixelsEvent: public Event {
+    const std::vector<std::vector<Color>>& pixels;
+    const std::string& filePath;
+
+    SavePixelsEvent(const std::vector<std::vector<Color>>& pixels,
+                    const std::string& filePath);
 };
 
 #endif

@@ -13,7 +13,10 @@ public:
     GlutEngine(int width, int height, const char* appName);
 
     // void drawRect(int x, int y, int width, int height, const Color& color) override;
-    void drawText(int x, int y, const std::string &text, const std::string &fontPath, int fontSize) override;
+    void drawText(int x, int y, const std::string &text, 
+                  const std::string &fontPath, 
+                  int fontSize, 
+                  const Color& color) override;
     void setupApp(int width, int height, const char* appName) override;
     void clear(const Color& color) override;
     void display() override;

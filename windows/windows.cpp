@@ -90,13 +90,19 @@ std::vector<std::vector<Color>>& RectPixelButton::getPixels() {
     return pixels;
 }
 
-Text::Text(int x, int y, const std::string& text):
+Text::Text(int x, int y, const std::string& text,
+           const std::string& fontName,
+           int fontSize, 
+           const Color& color):
      x(x),
      y(y),
-     text(text) {}
+     text(text),
+     font(fontName),
+     fontSize(fontSize),
+     color(color) {}
 
-void Text::setFont(const std::string& pathToFont) {
-    fontPath = pathToFont;
+void Text::setFont(const std::string& fontName) {
+    font = fontName;
 }
 
 void Text::setFontSize(int size) {
@@ -104,6 +110,6 @@ void Text::setFontSize(int size) {
 }
 
 void Text::draw(Engine &engine) {
-    engine.drawText(x, y, text, fontPath, fontSize);
+    engine.drawText(x, y, text, font, fontSize, color);
     drawSubWindows(engine);
 }
