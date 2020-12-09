@@ -61,6 +61,8 @@ public:
                     SystemEventSender* systemEventSender);
 
     std::vector<std::vector<Color>>& getPixels();
+    void setPixels(uint32_t* newPixels, int width, int height);
+
     void draw(Engine& engine) override;
 };
 

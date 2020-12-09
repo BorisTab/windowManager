@@ -47,10 +47,6 @@ void RectButton::checkClick(std::unique_ptr<Event>& event) {
 
 void RectButton::getEvent(std::unique_ptr<Event>& event) {
     checkClick(event);
-
-    // for (auto window: subWindows) {
-    //     window->getEvent(event);
-    // }
 }
 
 RectMoveable::RectMoveable(int x, int y, int width, int height, 
@@ -84,6 +80,14 @@ void RectPixelButton::draw(Engine& engine) {
     engine.drawPixels(x, y, pixels);
 
     drawSubWindows(engine);
+}
+
+void RectPixelButton::setPixels(uint32_t* newPixels, int width, int height) {
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            pixels[y][x] = Color(newPixels[y * width + x]);
+        }
+    }
 }
 
 std::vector<std::vector<Color>>& RectPixelButton::getPixels() {

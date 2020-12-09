@@ -19,8 +19,11 @@ public:
             b(b),
             alpha(alpha) {}
 
-//    Color(const Vector3<unsigned char>& vec):
-//            Vector3<unsigned char>(vec) {}
+   Color(uint32_t color):
+         alpha((color >> 24) & 0xff),
+         b((color >> 16) & 0xff), 
+         g((color >> 8) & 0xff),
+         r(color & 0xff) {}
 
     Color operator*(const Color& color) {
         return Color(r * color.r / 255, g * color.g / 255, b * color.b / 255,
@@ -44,6 +47,14 @@ public:
 //
 //        return *this;
 //    }
+
+    uint32_t getUint32() const {
+        return (r << 24) + (g << 16) + (b << 8) + alpha;
+    }
+
+    uint32_t getBackUint32() const {
+        return (alpha << 24) + (b << 16) + (g << 8) + r;
+    }
 
     bool operator==(const Color& color) {
         if (r == color.r && g == color.g && b == color.b && alpha == color.alpha)
